@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -41,11 +40,6 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
      * @var \PHPUnit\Framework\MockObject\MockObject|RequestStack
      */
     protected $requestStack;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|SessionInterface
-     */
-    protected $session;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|Form
@@ -170,10 +164,6 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->session = $this->getMockBuilder(SessionInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
 
         $this->instance = new AuthorizeController(
             $this->requestStack,
@@ -184,8 +174,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             $this->router,
             $this->clientManager,
             $this->eventDispatcher,
-            $this->twig,
-            $this->session
+            $this->twig
         );
 
         /** @var \PHPUnit\Framework\MockObject\MockObject&Request $request */
@@ -499,7 +488,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($this->user)
         ;
 
-        $this->session
+        $this->requestStack->getSession()
             ->expects($this->exactly(2))
             ->method('get')
             ->with('_fos_oauth_server.ensure_logout')
