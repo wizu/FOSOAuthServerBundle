@@ -22,7 +22,7 @@ use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\RefreshToken;
 use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
 use FOS\OAuthServerBundle\Storage\OAuthStorage;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -50,9 +50,9 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
      */
     protected $userProvider;
     /**
-     * @var EncoderFactoryInterface&\PHPUnit\Framework\MockObject\MockObject
+     * @var PasswordHasherFactoryInterface&\PHPUnit\Framework\MockObject\MockObject
      */
-    protected $encoderFactory;
+    protected $passwordHasherFactory;
     /**
      * @var OAuthStorage
      */
@@ -86,12 +86,12 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
             ])
             ->getMock()
         ;
-        $this->encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
+        $this->passwordHasherFactory = $this->getMockBuilder(PasswordHasherFactoryInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
 
-        $this->storage = new OAuthStorage($this->clientManager, $this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager, $this->userProvider, $this->encoderFactory);
+        $this->storage = new OAuthStorage($this->clientManager, $this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager, $this->userProvider, $this->passwordHasherFactory);
     }
 
     public function testGetClientReturnsClientWithGivenId(): void
@@ -391,11 +391,11 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         $user->expects($this->once())
             ->method('getSalt')->with()->will($this->returnValue('bar'));
 
-        $encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
+        $passwordHasher = $this->getMockBuilder('Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface')
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $encoder->expects($this->once())
+        $passwordHasher->expects($this->once())
             ->method('isPasswordValid')
             ->with('foo', 'baz', 'bar')
             ->will($this->returnValue(true))
@@ -407,10 +407,10 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue($user))
         ;
 
-        $this->encoderFactory->expects($this->once())
-            ->method('getEncoder')
+        $this->passwordHasherFactory->expects($this->once())
+            ->method('getPasswordHasher')
             ->with($user)
-            ->will($this->returnValue($encoder))
+            ->will($this->returnValue($passwordHasher))
         ;
 
         $this->assertSame([
@@ -430,11 +430,11 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         $user->expects($this->once())
             ->method('getSalt')->with()->will($this->returnValue('bar'));
 
-        $encoder = $this->getMockBuilder('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')
+        $passwordHasher = $this->getMockBuilder('Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface')
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $encoder->expects($this->once())
+        $passwordHasher->expects($this->once())
             ->method('isPasswordValid')
             ->with('foo', 'baz', 'bar')
             ->will($this->returnValue(false))
@@ -446,10 +446,10 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue($user))
         ;
 
-        $this->encoderFactory->expects($this->once())
-            ->method('getEncoder')
+        $this->passwordHasherFactory->expects($this->once())
+            ->method('getPasswordHasher')
             ->with($user)
-            ->will($this->returnValue($encoder))
+            ->will($this->returnValue($passwordHasher))
         ;
 
         $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
