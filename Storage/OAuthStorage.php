@@ -158,7 +158,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         }
 
         $passwordHasher = $this->passwordHasherFactory->getPasswordHasher($user);
-        if ($passwordHasher->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
+        if ($passwordHasher->verify($user->getPassword(), $password, $user->getSalt())) {
             return [
                 'data' => $user,
             ];

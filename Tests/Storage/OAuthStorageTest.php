@@ -26,6 +26,8 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 class OAuthStorageTest extends \PHPUnit\Framework\TestCase
 {
@@ -382,7 +384,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
     public function testCheckUserCredentialsReturnsTrueOnValidCredentials(): void
     {
         $client = new Client();
-        $user = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')
+        $user = $this->getMockBuilder(User::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -391,12 +393,13 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         $user->expects($this->once())
             ->method('getSalt')->with()->will($this->returnValue('bar'));
 
-        $passwordHasher = $this->getMockBuilder('Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface')
+        $passwordHasher = $this->getMockBuilder('Symfony\Component\PasswordHasher\PasswordHasherInterface')
             ->disableOriginalConstructor()
             ->getMock()
         ;
+
         $passwordHasher->expects($this->once())
-            ->method('isPasswordValid')
+            ->method('verify')
             ->with('foo', 'baz', 'bar')
             ->will($this->returnValue(true))
         ;
@@ -421,7 +424,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
     public function testCheckUserCredentialsReturnsFalseOnInvalidCredentials(): void
     {
         $client = new Client();
-        $user = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')
+        $user = $this->getMockBuilder(User::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -430,12 +433,12 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         $user->expects($this->once())
             ->method('getSalt')->with()->will($this->returnValue('bar'));
 
-        $passwordHasher = $this->getMockBuilder('Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface')
+        $passwordHasher = $this->getMockBuilder('Symfony\Component\PasswordHasher\PasswordHasherInterface')
             ->disableOriginalConstructor()
             ->getMock()
         ;
         $passwordHasher->expects($this->once())
-            ->method('isPasswordValid')
+            ->method('verify')
             ->with('foo', 'baz', 'bar')
             ->will($this->returnValue(false))
         ;
@@ -624,7 +627,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
     }
 }
 
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface
 {
     /**
      * @var string|int
@@ -639,25 +642,28 @@ class User implements UserInterface
         $this->username = $username;
     }
 
-    public function getRoles()
+    /**
+     * @return array<string>
+     */
+    public function getRoles(): array
     {
         return [];
     }
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return null;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
 
     /**
-     * @return string|int
+     * @return string|null
      */
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->username;
     }
