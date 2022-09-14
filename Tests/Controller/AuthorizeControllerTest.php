@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -106,6 +107,11 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
      */
     protected $user;
 
+        /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|SessionInterface
+     */
+    protected $session;
+
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|ClientInterface
      */
@@ -161,6 +167,11 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
         $this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $this->session = $this->getMockBuilder(SessionInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -261,6 +272,12 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($this->user)
         ;
 
+        $this->requestStack
+            ->expects($this->once())
+            ->method('getSession')
+            ->willReturn($this->session)
+        ;
+
         $this->session
             ->expects($this->once())
             ->method('get')
@@ -333,6 +350,12 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($this->user)
         ;
 
+        $this->requestStack
+            ->expects($this->once())
+            ->method('getSession')
+            ->willReturn($this->session)
+        ;
+
         $this->session
             ->expects($this->once())
             ->method('get')
@@ -400,6 +423,12 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->expects($this->once())
             ->method('getUser')
             ->willReturn($this->user)
+        ;
+
+        $this->requestStack
+            ->expects($this->once())
+            ->method('getSession')
+            ->willReturn($this->session)
         ;
 
         $this->session
@@ -488,7 +517,7 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($this->user)
         ;
 
-        $this->requestStack->getSession()
+        $this->session
             ->expects($this->exactly(2))
             ->method('get')
             ->with('_fos_oauth_server.ensure_logout')
