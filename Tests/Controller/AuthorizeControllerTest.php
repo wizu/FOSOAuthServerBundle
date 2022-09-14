@@ -107,6 +107,11 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
      */
     protected $user;
 
+        /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|SessionInterface
+     */
+    protected $session;
+
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|SessionInterface
      */
