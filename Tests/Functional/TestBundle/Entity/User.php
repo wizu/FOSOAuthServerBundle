@@ -44,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
         return $this->id;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         return ['ROLE_USER'];
     }
@@ -64,9 +64,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
         return null;
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
-        return $this->getId();
+        return (string) $this->getId();
     }
 
     public function getUserIdentifier(): string
