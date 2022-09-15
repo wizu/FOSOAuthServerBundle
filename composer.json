@@ -28,9 +28,6 @@
         "symfony/symfony": "^5.3",
         "symfony/twig-bundle": "^5.3"
     },
-    "conflict": {
-        "twig/twig": "<1.40 || >=2.0,<2.9"
-    },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/mongodb-odm": "^2.2",
@@ -48,6 +45,9 @@
         "symfony/phpunit-bridge": "^5.3",
         "symfony/security-core": "^5.3",
         "symfony/yaml": "^5.3"
+    },
+    "conflict": {
+        "twig/twig": "<1.40 || >=2.0,<2.9"
     },
     "suggest": {
         "doctrine/doctrine-bundle": "*",
