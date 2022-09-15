@@ -29,8 +29,6 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
-use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
-use Symfony\Component\Security\Http\Authenticator\Passport\UserPassportInterface;
 
 /**
  * OAuthAuthenticator class.
@@ -67,7 +65,7 @@ class OAuthAuthenticator implements AuthenticatorInterface
     /**
      * {@inheritdoc}
      */
-    public function authenticate(Request $request): UserPassportInterface
+    public function authenticate(Request $request): Passport
     {
         // remove the authorization header from the request on this check
         $tokenString = $this->serverService->getBearerToken($request, true);
@@ -108,9 +106,19 @@ class OAuthAuthenticator implements AuthenticatorInterface
     }
 
     /**
+     * Deprecated, here to maintain Symfony 5 support.
+     */
+    public function createAuthenticatedToken(Passport $passport, string $firewallName): TokenInterface
+    {
+        $token = $this->createToken($passport, $firewallName);
+        $token->setAuthenticated(true, false);
+        return $token;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function createAuthenticatedToken(PassportInterface $passport, string $firewallName): TokenInterface
+    public function createToken(Passport $passport, string $firewallName): TokenInterface
     {
         try {
             // expect the badges in the passport from authenticate method above
@@ -137,7 +145,6 @@ class OAuthAuthenticator implements AuthenticatorInterface
         }
 
         $token = new OAuthToken($credentials->getRoles($user));
-        $token->setAuthenticated(true);
         $token->setToken($credentials->getTokenString());
         $token->setUser($user);
 

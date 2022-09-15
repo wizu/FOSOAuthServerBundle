@@ -29,7 +29,7 @@ class OAuthFactory implements AuthenticatorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createAuthenticator(ContainerBuilder $container, string $id, array $config, string $userProviderId)
+    public function createAuthenticator(ContainerBuilder $container, string $id, array $config, string $userProviderId): array|string
     {
         $providerId = 'fos_oauth_server.security.authentication.authenticator.'.$id;
         $container
@@ -79,7 +79,7 @@ class OAuthFactory implements AuthenticatorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getKey()
+    public function getKey(): string
     {
         return 'fos_oauth';
     }

@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CredentialsExpiredException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
-use Symfony\Component\Security\Core\User\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -43,7 +43,7 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
     protected $serverService;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|User
+     * @var \PHPUnit\Framework\MockObject\MockObject|UserInterface
      */
     protected $user;
 
@@ -82,7 +82,7 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
 
         // mock the core user object rather than the user interface that the new
         // getUserIdentifier method is used rather than the deprecated getUsername
-        $this->user = $this->getMockBuilder(User::class)->disableOriginalConstructor()->getMock();
+        $this->user = $this->getMockBuilder(UserInterface::class)->disableOriginalConstructor()->getMock();
 
         $this->authenticator = new OAuthAuthenticator(
             $this->serverService,
@@ -241,7 +241,7 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($passport->getBadge(OAuthCredentials::class)->isResolved());
     }
 
-    public function testCreateAuthenticatedTokenWithValidPassport(): void
+    public function testCreateTokenWithValidPassport(): void
     {
         // expect the user to be loaded by the provider
         $this->userProvider->expects($this->once())
@@ -269,9 +269,8 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
             new OAuthCredentials('mock_token_string', 'scope_1 scope_2')
         );
 
-        $token = $this->authenticator->createAuthenticatedToken($passport, 'api_firewall_name');
+        $token = $this->authenticator->createToken($passport, 'api_firewall_name');
 
-        $this->assertTrue($token->isAuthenticated());
         $this->assertSame('mock_token_string', $token->getToken());
         $this->assertSame($this->user, $token->getUser());
         $this->assertSame(['ROLE_USER', 'ROLE_SCOPE_1', 'ROLE_SCOPE_2'], $token->getRoleNames());
