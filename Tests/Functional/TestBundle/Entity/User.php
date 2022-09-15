@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace FOS\OAuthServerBundle\Tests\Functional\TestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
  */
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -57,7 +59,7 @@ class User implements UserInterface
         $this->password = $password;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
@@ -65,6 +67,11 @@ class User implements UserInterface
     public function getUsername()
     {
         return $this->getId();
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->getId();
     }
 
     public function eraseCredentials(): void
