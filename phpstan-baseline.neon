@@ -696,16 +696,6 @@ parameters:
 			path: Security/Authentication/Passport/OAuthCredentials.php
 
 		-
-			message: "#^Parameter \\#1 \\$httpCode of class OAuth2\\\\OAuth2AuthenticateException constructor expects string, int given\\.$#"
-			count: 2
-			path: Security/Authentication/Provider/OAuthProvider.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: Security/Authentication/Provider/OAuthProvider.php
-
-		-
 			message: "#^Method FOS\\\\OAuthServerBundle\\\\Security\\\\Authentication\\\\Token\\\\OAuthToken\\:\\:getToken\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Security/Authentication/Token/OAuthToken.php
@@ -729,21 +719,6 @@ parameters:
 			message: "#^Property FOS\\\\OAuthServerBundle\\\\Security\\\\EntryPoint\\\\OAuthEntryPoint\\:\\:\\$serverService has no type(|hint) specified\\.$#"
 			count: 1
 			path: Security/EntryPoint/OAuthEntryPoint.php
-
-		-
-			message: "#^Call to an undefined method Throwable\\:\\:getHttpResponse\\(\\)\\.$#"
-			count: 1
-			path: Security/Firewall/OAuthListener.php
-
-		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Security\\\\Firewall\\\\OAuthListener\\:\\:__invoke\\(\\) has no return type(|hint) specified\\.$#"
-			count: 1
-			path: Security/Firewall/OAuthListener.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: Security/Firewall/OAuthListener.php
 
 		-
 			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\GrantExtensionDispatcherInterface\\:\\:setGrantExtension\\(\\) has no return type(|hint) specified\\.$#"
@@ -940,11 +915,6 @@ parameters:
 			path: Tests/Form/Handler/AuthorizeFormHandlerTest.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Tests\\\\Functional\\\\TestBundle\\\\Entity\\\\User\\:\\:getUsername\\(\\) should return string but returns int\\|null\\.$#"
-			count: 1
-			path: Tests/Functional/TestBundle/Entity/User.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface\\:\\:getToken\\(\\)\\.$#"
 			count: 1
 			path: Tests/Security/Authentication/Authenticator/OAuthAuthenticatorTest.php
@@ -953,41 +923,6 @@ parameters:
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:get(UserIdentifier|TokenString|Roles)\\(\\)\\.$#"
 			count: 3
 			path: Tests/Security/Authentication/Authenticator/OAuthAuthenticatorTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: Tests/Security/Authentication/Provider/OAuthProviderTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$className of method PHPUnit\\\\Framework\\\\TestCase\\:\\:getMockBuilder\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Security\\\\Core\\\\SecurityContextInterface\\>, string given\\.$#"
-			count: 1
-			path: Tests/Security/Firewall/OAuthListenerTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$tokenStorage of class FOS\\\\OAuthServerBundle\\\\Security\\\\Firewall\\\\OAuthListener constructor expects Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\Storage\\\\TokenStorageInterface, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
-			count: 2
-			path: Tests/Security/Firewall/OAuthListenerTest.php
-
-		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with OAuth2\\\\Model\\\\IOAuth2AccessToken will always evaluate to false\\.$#"
-			count: 1
-			path: Tests/Storage/OAuthStorageTest.php
-
-		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with OAuth2\\\\Model\\\\IOAuth2AuthCode will always evaluate to false\\.$#"
-			count: 1
-			path: Tests/Storage/OAuthStorageTest.php
-
-		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with OAuth2\\\\Model\\\\IOAuth2Client will always evaluate to false\\.$#"
-			count: 1
-			path: Tests/Storage/OAuthStorageTest.php
-
-		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with OAuth2\\\\Model\\\\IOAuth2Token will always evaluate to false\\.$#"
-			count: 1
-			path: Tests/Storage/OAuthStorageTest.php
 
 		-
 			message: "#^Method FOS\\\\OAuthServerBundle\\\\Util\\\\Random\\:\\:generateToken\\(\\) has no return type(|hint) specified\\.$#"
