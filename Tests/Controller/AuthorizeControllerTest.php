@@ -524,6 +524,12 @@ class AuthorizeControllerTest extends \PHPUnit\Framework\TestCase
             ->willReturn(false)
         ;
 
+        $this->requestStack
+            ->expects($this->exactly(2))
+            ->method('getSession')
+            ->willReturn($this->session)
+        ;
+
         $propertyReflection = new \ReflectionProperty(AuthorizeController::class, 'client');
         $propertyReflection->setAccessible(true);
         $propertyReflection->setValue($this->instance, $this->client);
