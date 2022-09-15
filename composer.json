@@ -21,6 +21,7 @@
     "homepage": "http://friendsofsymfony.github.com",
     "require": {
         "php": "^8.1",
+        "doctrine/annotations": "^1.13",
         "friendsofsymfony/oauth2-php": "dev-symfony_6",
         "monolog/monolog": "^3.2",
         "symfony/dependency-injection": "^6.0",

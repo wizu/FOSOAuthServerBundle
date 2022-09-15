@@ -811,11 +811,6 @@ parameters:
 			path: Storage/OAuthStorage.php
 
 		-
-			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:getAccessToken\\(\\) should return OAuth2\\\\Model\\\\IOAuth2AccessToken but returns FOS\\\\OAuthServerBundle\\\\Model\\\\TokenInterface\\|null\\.$#"
-			count: 1
-			path: Storage/OAuthStorage.php
-
-		-
 			message: "#^Method FOS\\\\OAuthServerBundle\\\\Storage\\\\OAuthStorage\\:\\:markAuthCodeAsUsed\\(\\) has no return type(|hint) specified\\.$#"
 			count: 1
 			path: Storage/OAuthStorage.php
