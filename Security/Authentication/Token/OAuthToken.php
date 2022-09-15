@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 class OAuthToken extends AbstractToken
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $token;
 
@@ -33,11 +33,6 @@ class OAuthToken extends AbstractToken
     }
 
     public function getToken()
-    {
-        return $this->token;
-    }
-
-    public function getCredentials()
     {
         return $this->token;
     }

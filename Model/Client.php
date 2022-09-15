@@ -139,7 +139,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // nothind to erase
     }

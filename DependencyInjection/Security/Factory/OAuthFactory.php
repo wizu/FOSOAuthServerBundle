@@ -45,7 +45,7 @@ class OAuthFactory implements AuthenticatorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
+    public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint): array
     {
         $providerId = 'security.authentication.provider.fos_oauth_server.'.$id;
         $container
@@ -63,7 +63,7 @@ class OAuthFactory implements AuthenticatorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getPosition()
+    public function getPosition(): string
     {
         return 'pre_auth';
     }
