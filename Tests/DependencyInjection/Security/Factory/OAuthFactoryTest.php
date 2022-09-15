@@ -83,7 +83,7 @@ class OAuthFactoryTest extends \PHPUnit\Framework\TestCase
             )
             ->willReturnOnConsecutiveCalls(
                 $definition,
-                null
+                $definition
             )
         ;
 

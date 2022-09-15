@@ -167,7 +167,10 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         ;
         $this->instance = new AuthorizeFormHandler($this->form, $requestStack);
 
-        $request = new \stdClass();
+        $request = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $requestStack
             ->expects($this->once())
@@ -185,7 +188,8 @@ class AuthorizeFormHandlerTest extends \PHPUnit\Framework\TestCase
         $this->instance = new AuthorizeFormHandler($this->form, null);
         $this->instance->setContainer($this->container);
 
-        $randomData = \random_bytes(10);
+        $randomData = new \stdClass();
+        $randomData->foo = 'bar';
 
         $this->container
             ->expects($this->once())
