@@ -665,6 +665,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
         return $this->username;
     }
 
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
     public function eraseCredentials(): void
     {
     }

@@ -135,4 +135,28 @@ class Client implements ClientInterface
     {
         return $this->allowedGrantTypes;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function eraseCredentials()
+    {
+        // nothind to erase
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserIdentifier(): string
+    {
+        return $this->getRandomId();
+    }
 }
