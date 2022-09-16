@@ -48,12 +48,6 @@
         "symfony/security-core": "^6.0",
         "symfony/yaml": "^6.0"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/aaronopela/oauth2-php"
-        }
-    ],
     "conflict": {
         "twig/twig": "<1.40 || >=2.0,<2.9"
     },
@@ -63,6 +57,12 @@
         "symfony/console": "Needed to be able to use commands",
         "symfony/form": "Needed to be able to use the AuthorizeFormType"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/aaronopela/oauth2-php"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "FOS\\OAuthServerBundle\\": ""
