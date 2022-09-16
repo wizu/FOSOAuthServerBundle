@@ -112,6 +112,7 @@ class OAuthAuthenticator implements AuthenticatorInterface
     {
         $token = $this->createToken($passport, $firewallName);
         $token->setAuthenticated(true, false);
+
         return $token;
     }
 
