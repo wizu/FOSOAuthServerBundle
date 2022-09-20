@@ -64,6 +64,7 @@ jobs:
         include:
           - dependencies: 'beta'
         symfony_version:
+          - 5.4
           - 6.0
     env:
       SYMFONY_VERSION: '${{ matrix.symfony_version }}'
