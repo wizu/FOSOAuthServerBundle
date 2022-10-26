@@ -365,6 +365,20 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         $this->storage->checkUserCredentials($client, 'Joe', 'baz');
     }
 
+    public function testCheckUserCredentialsOnInvalidUserClass(): void
+    {
+        $client = new Client();
+        $user = new InvalidUser('Joe');
+
+        $this->userProvider->expects($this->once())
+            ->method('loadUserByIdentifier')
+            ->with('Joe')
+            ->will($this->returnValue($user))
+        ;
+
+        $this->assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
+    }
+
     public function testCheckUserCredentialsCatchesAuthenticationExceptions(): void
     {
         $client = new Client();
@@ -390,8 +404,6 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         ;
         $user->expects($this->once())
             ->method('getPassword')->with()->will($this->returnValue('foo'));
-        $user->expects($this->once())
-            ->method('getSalt')->with()->will($this->returnValue('bar'));
 
         $passwordHasher = $this->getMockBuilder('Symfony\Component\PasswordHasher\PasswordHasherInterface')
             ->disableOriginalConstructor()
@@ -400,7 +412,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
 
         $passwordHasher->expects($this->once())
             ->method('verify')
-            ->with('foo', 'baz', 'bar')
+            ->with('foo', 'baz')
             ->will($this->returnValue(true))
         ;
 
@@ -430,8 +442,6 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         ;
         $user->expects($this->once())
             ->method('getPassword')->with()->will($this->returnValue('foo'));
-        $user->expects($this->once())
-            ->method('getSalt')->with()->will($this->returnValue('bar'));
 
         $passwordHasher = $this->getMockBuilder('Symfony\Component\PasswordHasher\PasswordHasherInterface')
             ->disableOriginalConstructor()
@@ -439,7 +449,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
         ;
         $passwordHasher->expects($this->once())
             ->method('verify')
-            ->with('foo', 'baz', 'bar')
+            ->with('foo', 'baz')
             ->will($this->returnValue(false))
         ;
 
@@ -627,7 +637,7 @@ class OAuthStorageTest extends \PHPUnit\Framework\TestCase
     }
 }
 
-class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface
+class InvalidUser implements UserInterface
 {
     /**
      * @var string|int
@@ -655,6 +665,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
         return null;
     }
 
+    /**
+     * This method is deprecated since Symfony 5.3, will always return null,
+     * and is no longer used.
+     */
     public function getSalt(): ?string
     {
         return null;
@@ -673,4 +687,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, LegacyP
     public function eraseCredentials(): void
     {
     }
+}
+
+class User extends InvalidUser implements PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface
+{
 }

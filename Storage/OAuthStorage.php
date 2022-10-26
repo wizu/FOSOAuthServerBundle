@@ -18,13 +18,13 @@ use FOS\OAuthServerBundle\Model\AuthCodeManagerInterface;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface;
+use FOS\OAuthServerBundle\Model\TokenInterface;
 use OAuth2\IOAuth2GrantClient;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\IOAuth2GrantExtension;
 use OAuth2\IOAuth2GrantImplicit;
 use OAuth2\IOAuth2GrantUser;
 use OAuth2\IOAuth2RefreshTokens;
-use OAuth2\Model\IOAuth2AccessToken;
 use OAuth2\Model\IOAuth2AuthCode;
 use OAuth2\Model\IOAuth2Client;
 use OAuth2\Model\IOAuth2Token;
@@ -33,6 +33,7 @@ use OAuth2\OAuth2ServerException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2GrantCode, IOAuth2GrantImplicit, IOAuth2GrantClient, IOAuth2GrantExtension, GrantExtensionDispatcherInterface
@@ -113,7 +114,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return $this->checkClientCredentials($client, $client_secret);
     }
 
-    public function getAccessToken($token): ?IOAuth2AccessToken
+    public function getAccessToken($token): ?TokenInterface
     {
         return $this->accessTokenManager->findTokenByToken($token);
     }
@@ -160,8 +161,12 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
             return false;
         }
 
+        if (!$user instanceof PasswordAuthenticatedUserInterface) {
+            return false;
+        }
+
         $passwordHasher = $this->passwordHasherFactory->getPasswordHasher($user);
-        if ($passwordHasher->verify($user->getPassword(), $password, $user->getSalt())) {
+        if ($passwordHasher->verify($user->getPassword(), $password)) {
             return [
                 'data' => $user,
             ];

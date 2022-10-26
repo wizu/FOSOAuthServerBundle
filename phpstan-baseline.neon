@@ -686,6 +686,16 @@ parameters:
 			path: Security/Authentication/Authenticator/OAuthAuthenticator.php
 
 		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface\\:\\:setAuthenticated\\(\\)\\.$#"
+			count: 1
+			path: Security/Authentication/Authenticator/OAuthAuthenticator.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getUsername\\(\\)\\.$#"
+			count: 1
+			path: Security/Authentication/Authenticator/OAuthAuthenticator.php
+
+		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:get(UserIdentifier|Roles|TokenString)\\(\\)\\.$#"
 			count: 3
 			path: Security/Authentication/Authenticator/OAuthAuthenticator.php
