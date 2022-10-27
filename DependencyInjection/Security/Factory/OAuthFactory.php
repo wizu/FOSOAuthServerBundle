@@ -101,5 +101,6 @@ if (interface_exists('\Symfony\Bundle\SecurityBundle\DependencyInjection\Securit
     }
 } else {
     class OAuthFactory extends BaseOAuthFactory
-    {}
+    {
+    }
 }

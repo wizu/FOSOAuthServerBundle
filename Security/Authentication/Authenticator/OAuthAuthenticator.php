@@ -44,7 +44,8 @@ if (interface_exists('\Symfony\Component\Security\Http\Authenticator\Passport\Pa
     }
 } else {
     trait LegacyOAuthAuthenticatorTrait
-    {}
+    {
+    }
 }
 
 /**

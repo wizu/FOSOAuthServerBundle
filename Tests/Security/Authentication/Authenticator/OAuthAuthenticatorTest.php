@@ -286,6 +286,7 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
         // not needed for Symfony > 5.3
         if (!interface_exists('\Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface')) {
             $this->assertTrue(true);
+
             return;
         }
 
@@ -310,6 +311,7 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
         // not needed for Symfony > 5.3
         if (!interface_exists('\Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface')) {
             $this->assertTrue(true);
+
             return;
         }
 
