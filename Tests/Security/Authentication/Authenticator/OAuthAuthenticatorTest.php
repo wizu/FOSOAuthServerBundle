@@ -82,7 +82,12 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
 
         // mock the core user object rather than the user interface that the new
         // getUserIdentifier method is used rather than the deprecated getUsername
-        $this->user = $this->getMockBuilder(UserInterface::class)->disableOriginalConstructor()->getMock();
+        $this->user = $this->getMockBuilder(
+            // symfony 5.3
+            class_exists('\Symfony\Component\Security\Core\User\User')
+                ? '\Symfony\Component\Security\Core\User\User'
+                : UserInterface::class
+        )->disableOriginalConstructor()->getMock();
 
         $this->authenticator = new OAuthAuthenticator(
             $this->serverService,
@@ -278,6 +283,12 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
 
     public function testCreateAuthenticatedTokenWithUnexpectedPassportCredentials(): void
     {
+        // not needed for Symfony > 5.3
+        if (!interface_exists('\Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface')) {
+            $this->assertTrue(true);
+            return;
+        }
+
         // expect the user to not be loaded by the provider
         $this->userProvider->expects($this->never())->method('loadUserByIdentifier');
 
@@ -296,6 +307,12 @@ class OAuthAuthenticatorTest extends \PHPUnit\Framework\TestCase
 
     public function testCreateAuthenticatedTokenTransformsAccountStatusException(): void
     {
+        // not needed for Symfony > 5.3
+        if (!interface_exists('\Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface')) {
+            $this->assertTrue(true);
+            return;
+        }
+
         // expect the user to be loaded by the provider
         $this->userProvider->expects($this->once())
             ->method('loadUserByIdentifier')

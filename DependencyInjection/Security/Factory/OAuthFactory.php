@@ -24,7 +24,9 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Arnaud Le Blanc <arnaud.lb@gmail.com>
  */
-class OAuthFactory implements AuthenticatorFactoryInterface
+
+// support for symfony 5.3 (see below)
+class BaseOAuthFactory implements AuthenticatorFactoryInterface
 {
     /**
      * {@inheritdoc}
@@ -90,4 +92,14 @@ class OAuthFactory implements AuthenticatorFactoryInterface
     public function addConfiguration(NodeDefinition $node)
     {
     }
+}
+
+// supporting Symfony 5.3 (must come after definition of BaseOAuthFactory)
+if (interface_exists('\Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface')) {
+    class OAuthFactory extends BaseOAuthFactory implements \Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface
+    {
+    }
+} else {
+    class OAuthFactory extends BaseOAuthFactory
+    {}
 }

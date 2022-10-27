@@ -30,6 +30,23 @@ use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
+// supports Symfony 5.3
+if (interface_exists('\Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface')) {
+    trait LegacyOAuthAuthenticatorTrait
+    {
+        public function createAuthenticatedToken(\Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface $passport, string $firewallName): TokenInterface
+        {
+            $token = $this->createToken($passport, $firewallName);
+            $token->setAuthenticated(true, false);
+
+            return $token;
+        }
+    }
+} else {
+    trait LegacyOAuthAuthenticatorTrait
+    {}
+}
+
 /**
  * OAuthAuthenticator class.
  *
@@ -37,6 +54,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
  */
 class OAuthAuthenticator implements AuthenticatorInterface
 {
+    use LegacyOAuthAuthenticatorTrait;
+
     /**
      * @var OAuth2
      */
@@ -103,17 +122,6 @@ class OAuthAuthenticator implements AuthenticatorInterface
         // passport will only be valid if all badges are resolved (user badge
         // is always resolved, credentials badge if passing the above check)
         return new Passport($userBadge, $credentials);
-    }
-
-    /**
-     * Deprecated, here to maintain Symfony 5 support.
-     */
-    public function createAuthenticatedToken(Passport $passport, string $firewallName): TokenInterface
-    {
-        $token = $this->createToken($passport, $firewallName);
-        $token->setAuthenticated(true, false);
-
-        return $token;
     }
 
     /**

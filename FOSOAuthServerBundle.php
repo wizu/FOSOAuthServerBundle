@@ -34,7 +34,13 @@ class FOSOAuthServerBundle extends Bundle
 
         /** @var SecurityExtension $extension */
         $extension = $container->getExtension('security');
-        $extension->addAuthenticatorFactory(new OAuthFactory());
+
+        // symfony > 5.3
+        if (method_exists($extension, 'addAuthenticatorFactory')) {
+            $extension->addAuthenticatorFactory(new OAuthFactory());
+        } else {
+            $extension->addSecurityListenerFactory(new OAuthFactory());
+        }
 
         $container->addCompilerPass(new GrantExtensionsCompilerPass());
         $container->addCompilerPass(new RequestStackCompilerPass());

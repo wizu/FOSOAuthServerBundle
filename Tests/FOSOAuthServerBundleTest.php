@@ -55,7 +55,12 @@ class FOSOAuthServerBundleTest extends \PHPUnit\Framework\TestCase
 
         $securityExtension
             ->expects($this->once())
-            ->method('addAuthenticatorFactory')
+            ->method(
+                // symfony > 5.3
+                method_exists(SecurityExtension::class, 'addAuthenticatorFactory')
+                    ? 'addAuthenticatorFactory'
+                    : 'addSecurityListenerFactory'
+            )
             ->with(new OAuthFactory())
             ->willReturn(null)
         ;

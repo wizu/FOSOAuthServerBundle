@@ -20,7 +20,26 @@ use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
  *
  * @author Arnaud Le Blanc <arnaud.lb@gmail.com>
  */
-class OAuthToken extends AbstractToken
+
+// supporting Symfony 5.3
+if (method_exists(AbstractToken::class, 'getCredentials')) {
+    class OAuthToken extends AbstractToken
+    {
+        use OAuthTokenTrait;
+
+        public function getCredentials()
+        {
+            return $this->token;
+        }
+    }
+} else {
+    class OAuthToken extends AbstractToken
+    {
+        use OAuthTokenTrait;
+    }
+}
+
+trait OAuthTokenTrait
 {
     /**
      * @var string|null
