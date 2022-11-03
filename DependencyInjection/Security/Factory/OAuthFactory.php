@@ -31,7 +31,7 @@ class BaseOAuthFactory implements AuthenticatorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createAuthenticator(ContainerBuilder $container, string $id, array $config, string $userProviderId): array|string
+    public function createAuthenticator(ContainerBuilder $container, string $id, array $config, string $userProviderId)
     {
         $providerId = 'fos_oauth_server.security.authentication.authenticator.'.$id;
         $container
