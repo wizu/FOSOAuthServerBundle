@@ -109,7 +109,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return $client->checkSecret($client_secret);
     }
 
-    public function checkClientCredentialsGrant(IOAuth2Client $client, $client_secret): bool|array
+    public function checkClientCredentialsGrant(IOAuth2Client $client, $client_secret)
     {
         return $this->checkClientCredentials($client, $client_secret);
     }
@@ -149,7 +149,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return in_array($grant_type, $client->getAllowedGrantTypes(), true);
     }
 
-    public function checkUserCredentials(IOAuth2Client $client, $username, $password): bool|array
+    public function checkUserCredentials(IOAuth2Client $client, $username, $password)
     {
         if (!$client instanceof ClientInterface) {
             throw new \InvalidArgumentException('Client has to implement the ClientInterface');
@@ -251,7 +251,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function checkGrantExtension(IOAuth2Client $client, $uri, array $inputData, array $authHeaders): bool|array
+    public function checkGrantExtension(IOAuth2Client $client, $uri, array $inputData, array $authHeaders)
     {
         if (!isset($this->grantExtensions[$uri])) {
             throw new OAuth2ServerException(Response::HTTP_BAD_REQUEST, OAuth2::ERROR_UNSUPPORTED_GRANT_TYPE);
