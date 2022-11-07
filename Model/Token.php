@@ -151,7 +151,7 @@ class Token implements TokenInterface
     /**
      * {@inheritdoc}
      */
-    public function getData(): mixed
+    public function getData()
     {
         return $this->getUser();
     }
