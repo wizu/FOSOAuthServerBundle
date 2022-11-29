@@ -157,6 +157,7 @@ class OAuthAuthenticator implements AuthenticatorInterface
         $token = new OAuthToken($credentials->getRoles($user));
         $token->setToken($credentials->getTokenString());
         $token->setUser($user);
+        $token->setAuthenticated($user && $token->getRoleNames());
 
         return $token;
     }
